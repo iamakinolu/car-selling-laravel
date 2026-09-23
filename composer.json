@@ -1,0 +1,38 @@
+{
+  "$schema": "https://getcomposer.org/schema.json",
+  "name": "car-findal/car-selling-website",
+  "type": "project",
+  "description": "Laravel car selling marketplace converted from the supplied HTML/CSS website.",
+  "require": {
+    "php": "^8.3",
+    "laravel/framework": "^13.0",
+    "laravel/socialite": "^5.31"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.24"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Database\\Factories\\": "database/factories/",
+      "Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "scripts": {
+    "setup": [
+      "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "php artisan key:generate",
+      "php artisan migrate --seed",
+      "php artisan storage:link"
+    ],
+    "dev": [
+      "php artisan serve"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
