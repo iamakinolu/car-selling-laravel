@@ -1,0 +1,2 @@
+import React from 'react';import {Head} from '@inertiajs/react';import Layout from '../../Components/Layout';import CarCard from '../../Components/CarCard';
+export default function Favorites({cars}){return <Layout><Head title="Watchlist"/><div className="container section"><span className="eyebrow">YOUR SAVED CARS</span><h1>Watchlist</h1>{cars.data.length?<div className="cars-grid">{cars.data.map(c=><CarCard key={c.id} car={c} favorite/>)}</div>:<div className="empty-state"><i className="far fa-heart"/><h3>Your watchlist is empty.</h3></div>}</div></Layout>}

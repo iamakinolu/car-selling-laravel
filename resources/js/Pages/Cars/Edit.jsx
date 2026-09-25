@@ -1,0 +1,2 @@
+import React from 'react';import {Head,Link} from '@inertiajs/react';import Layout from '../../Components/Layout';import CarForm from '../../Components/CarForm';
+export default function Edit(p){return <Layout><Head title="Edit Car"/><div className="container section"><div className="section-heading"><div><span className="eyebrow">YOUR LISTING</span><h1>Edit Car</h1></div><Link href={`/cars/${p.car.id}`}>View Listing</Link></div><CarForm {...p}/></div></Layout>}

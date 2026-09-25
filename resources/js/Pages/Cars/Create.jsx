@@ -1,0 +1,2 @@
+import React from 'react';import {Head,Link} from '@inertiajs/react';import Layout from '../../Components/Layout';import CarForm from '../../Components/CarForm';
+export default function Create(p){return <Layout><Head title="Sell Your Car"/><div className="container section"><div className="section-heading"><div><span className="eyebrow">LIST YOUR VEHICLE</span><h1>Sell Your Car</h1></div><Link href="/dashboard">My Cars</Link></div><CarForm {...p}/></div></Layout>}
