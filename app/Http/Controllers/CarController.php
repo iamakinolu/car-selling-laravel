@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\CarImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -91,12 +92,33 @@ class CarController extends Controller
     {
         $this->authorizeCar($car);
         $request->validate(['images'=>'required|array|max:10','images.*'=>'image|max:5120']);
+        if ($car->images()->count() + count($request->file('images', []) ?? []) > 10) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'images' => 'A car can have up to 10 photos. Remove some photos before adding more.',
+            ]);
+        }
         $position = ((int)$car->images()->max('position')) + 1;
         foreach ($request->file('images') as $file) {
             $path = $file->store('cars/'.$car->id, 'public');
             $car->images()->create(['path'=>$path,'position'=>$position++]);
         }
         return back()->with('success','Images uploaded.');
+    }
+
+    public function destroyImage(Car $car, CarImage $image)
+    {
+        $this->authorizeCar($car);
+        abort_unless($image->car_id === $car->id, 404);
+        if ($car->images()->count() <= 1) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'images' => 'A car listing must keep at least one photo.',
+            ]);
+        }
+
+        Storage::disk('public')->delete($image->path);
+        $image->delete();
+
+        return response()->json(['message' => 'Photo removed.']);
     }
 
     private function authorizeCar(Car $car): void
@@ -122,6 +144,18 @@ class CarController extends Controller
             'images'=>'nullable|array|max:10',
             'images.*'=>'image|max:5120',
         ]);
+        $existingImageCount = $car->exists ? $car->images()->count() : 0;
+        $newImageCount = count($request->file('images', []) ?? []);
+        if ($existingImageCount + $newImageCount < 1) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'images' => 'Upload at least one photo before saving this listing.',
+            ]);
+        }
+        if ($existingImageCount + $newImageCount > 10) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'images' => 'A car can have up to 10 photos. Remove some photos before adding more.',
+            ]);
+        }
         if (!$updating) $data['user_id']=auth()->id();
         $data['published']=$request->boolean('published');
         $features = $request->input('features', []);
@@ -141,6 +175,13 @@ class CarController extends Controller
 
     private function applyFilters($query, Request $request): void
     {
+        if ($request->filled('q')) {
+            $term = mb_strtolower(trim($request->string('q')->toString()));
+            $query->where(function ($search) use ($term) {
+                $search->whereRaw('LOWER(maker) LIKE ?', ['%'.$term.'%'])
+                    ->orWhereRaw('LOWER(model) LIKE ?', ['%'.$term.'%']);
+            });
+        }
         foreach (['maker','model','state','city','car_type','fuel_type'] as $field) {
             if ($request->filled($field)) $query->where($field, $request->input($field));
         }

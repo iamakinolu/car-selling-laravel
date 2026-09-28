@@ -31,4 +31,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/watchlist', [CarController::class, 'watchlist'])->name('watchlist');
     Route::get('/cars/{car}/images', [CarController::class, 'images'])->name('cars.images');
     Route::post('/cars/{car}/images', [CarController::class, 'uploadImages'])->name('cars.images.upload');
+    Route::delete('/cars/{car}/images/{image}', [CarController::class, 'destroyImage'])->name('cars.images.destroy');
 });

@@ -4,11 +4,6 @@
   <div class="car-detail">
     <div class="car-images-carousel card">
       <img id="activeImage" class="car-detail-main-image" src="{{ $car->primary_image_url }}" alt="">
-      @if($car->images->count())
-      <div class="car-image-thumbnails">
-        @foreach($car->images as $image)<img src="{{ asset('storage/'.$image->path) }}" alt="" class="{{ $loop->first ? 'active-thumbnail' : '' }}">@endforeach
-      </div>
-      @endif
     </div>
     <div class="card p-large">
       <div class="flex items-center justify-between"><span class="car-item-badge">{{ strtoupper($car->car_type) }}</span><span>{{ $car->year }}</span></div>
@@ -25,5 +20,10 @@
       @endauth
     </div>
   </div>
+  @if($car->images->count())
+  <div class="car-image-thumbnails car-image-thumbnails-below-cards" aria-label="More photos of this car">
+    @foreach($car->images as $image)<img src="{{ asset('storage/'.$image->path) }}" alt="{{ $car->maker }} {{ $car->model }} photo {{ $loop->iteration }}" class="{{ $loop->first ? 'active-thumbnail' : '' }}">@endforeach
+  </div>
+  @endif
 </div>
 @endsection

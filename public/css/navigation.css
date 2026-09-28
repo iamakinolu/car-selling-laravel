@@ -1,0 +1,40 @@
+.navbar{position:sticky;top:0;z-index:100;height:76px;padding:0;background:rgba(255,255,255,.96);box-shadow:0 1px 0 rgba(25,37,43,.08);backdrop-filter:blur(14px)}
+.navbar-content{align-items:center;justify-content:space-between;gap:30px}
+.logo-wrapper{align-items:center;gap:10px;padding:0;text-decoration:none;color:#19252b;font-size:18px;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
+.logo-wrapper img{display:block;width:36px;height:36px;object-fit:contain}
+.navbar-panel{display:flex;align-items:center;justify-content:space-between;flex:1;height:100%;margin-left:28px}
+.site-nav{display:flex;align-items:center;gap:28px;height:100%}
+.site-nav>a{position:relative;display:inline-flex;align-items:center;height:100%;color:#5c676b;font-size:13px;font-weight:500;text-decoration:none;transition:color .2s ease}
+.site-nav>a:after{position:absolute;right:0;bottom:0;left:0;height:2px;background:#e9580c;content:"";transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
+.site-nav>a:hover,.site-nav>a.is-current{color:#19252b}.site-nav>a:hover:after,.site-nav>a.is-current:after{transform:scaleX(1)}
+.navbar-auth{display:flex;align-items:center;gap:22px;margin-left:0}
+.nav-sell-link{display:inline-flex;align-items:center;gap:8px;color:#19252b;font-size:13px;font-weight:700;text-decoration:none;transition:color .2s ease}.nav-sell-link span{display:grid;place-items:center;width:22px;height:22px;border:1px solid #e0e4e1;border-radius:50%;color:#e9580c;font-size:17px;font-weight:400;transition:background .2s ease,color .2s ease,border-color .2s ease}.nav-sell-link:hover{color:#e9580c}.nav-sell-link:hover span{border-color:#e9580c;background:#e9580c;color:#fff}
+.nav-login{color:#465257;font-size:13px;font-weight:500;text-decoration:none;transition:color .2s ease}.nav-login:hover{color:#e9580c}
+.nav-signup{display:inline-flex;align-items:center;gap:12px;min-height:42px;padding:0 15px;border-radius:4px;background:#19252b;color:#fff;font-size:12px;font-weight:700;text-decoration:none;transition:background .2s ease,transform .2s ease}.nav-signup:hover{background:#e9580c;color:#fff;transform:translateY(-1px)}
+.navbar-menu{position:relative}.navbar-menu-handler{display:flex;align-items:center;gap:8px;padding:5px 8px;border:0;border-radius:25px;background:transparent;color:#354248;font:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:background .2s ease}.navbar-menu-handler:hover,.navbar-menu.opened .navbar-menu-handler{background:#f3f4f2}.navbar-menu-handler svg{width:16px;height:16px;transition:transform .2s ease}.navbar-menu.opened .navbar-menu-handler svg{transform:rotate(180deg)}
+.nav-avatar{display:grid;place-items:center;width:31px;height:31px;border-radius:50%;background:#fff0e8;color:#c94b08;font-size:12px;font-weight:700}
+.navbar-menu .submenu{position:absolute;top:calc(100% + 12px);right:0;display:block;width:210px;margin:0;padding:7px;border:1px solid #e9ece9;border-radius:7px;background:#fff;box-shadow:0 16px 38px rgba(25,37,43,.14);list-style:none;opacity:0;visibility:hidden;transform:translateY(7px);transition:opacity .18s ease,transform .18s ease,visibility .18s ease}
+.navbar-menu:hover .submenu,.navbar-menu:focus-within .submenu,.navbar-menu.opened .submenu{opacity:1;visibility:visible;transform:translateY(0)}
+.navbar-menu .submenu>li>a,.navbar-menu .submenu>li button{display:block;width:100%;padding:11px 12px;border:0;border-radius:4px;background:transparent;color:#485459;text-align:left;text-decoration:none;font:inherit;font-size:12px;cursor:pointer;transition:background .18s ease,color .18s ease}
+.navbar-menu .submenu>li>a:hover,.navbar-menu .submenu>li button:hover{background:#f6f6f3;color:#e9580c}
+.navbar-menu .submenu form{margin:0}
+.btn-navbar-toggle{display:none}
+@media(max-width:760px){
+  .navbar{height:68px;padding:0}
+  .navbar-content{position:relative;align-items:center;gap:12px}
+  .logo-wrapper{font-size:16px}.logo-wrapper img{width:33px;height:33px}
+  .btn-navbar-toggle{display:grid;place-items:center;flex:none;width:42px;height:42px;margin-left:auto;padding:0;border:1px solid #e6e9e6;border-radius:50%;background:#fff;color:#19252b;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+  .btn-navbar-toggle:hover{border-color:#19252b;background:#19252b;color:#fff}.btn-navbar-toggle svg{width:20px;height:20px}.nav-icon-close{display:none}
+  .navbar-opened .btn-navbar-toggle .nav-icon-open{display:none}.navbar-opened .btn-navbar-toggle .nav-icon-close{display:block}
+  .navbar-panel{position:absolute;top:calc(100% + 1px);right:-16px;left:-16px;display:none;height:auto;max-height:calc(100vh - 68px);margin:0;padding:13px 20px 20px;overflow-y:auto;border-top:1px solid #eef0ed;background:#fff;box-shadow:0 18px 28px rgba(25,37,43,.12)}
+  .navbar-opened .navbar-panel{display:flex;align-items:stretch;flex-direction:column;gap:14px}
+  .site-nav{align-items:stretch;flex-direction:column;gap:0;height:auto}
+  .site-nav>a{height:auto;min-height:46px;border-bottom:1px solid #f0f1ef;font-size:14px}.site-nav>a:after{display:none}.site-nav>a.is-current{color:#e9580c}
+  .navbar-panel .navbar-auth{position:static;right:auto;top:auto;bottom:auto;display:flex;align-items:stretch;flex-direction:column;gap:13px;width:auto;height:auto;margin:0;padding:14px 0 0;overflow:visible;border-top:1px solid #eceeeb;background:transparent;box-shadow:none;text-align:left;transform:none}
+  body.navbar-opened{overflow:hidden;transform:none}
+  .nav-sell-link{justify-content:center;min-height:44px;border-radius:4px;background:#19252b;color:#fff}.nav-sell-link:hover{background:#e9580c;color:#fff}.nav-sell-link span{border-color:rgba(255,255,255,.35);color:#fff}
+  .nav-login{display:flex;align-items:center;justify-content:center;min-height:42px;border:1px solid #e1e5e2;border-radius:4px}
+  .nav-signup{justify-content:center;min-height:44px}
+  .navbar-menu{width:100%}.navbar-menu-handler{width:100%;padding:5px 0}.nav-avatar{width:34px;height:34px}.navbar-menu .submenu{position:static;width:100%;margin-top:7px;padding:5px;border:0;background:#f7f8f6;box-shadow:none;opacity:1;visibility:visible;transform:none;display:none}.navbar-menu:hover .submenu,.navbar-menu:focus-within .submenu{display:none}.navbar-menu.opened .submenu{display:block}
+}
+@media(prefers-reduced-motion:reduce){.navbar *, .navbar *:before,.navbar *:after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
