@@ -6,6 +6,7 @@
 @import "../../public/css/home.css" layer(legacy);
 @import "../../public/css/browse.css" layer(legacy);
 @import "../../public/css/listing-form.css" layer(legacy);
+@import "./overrides.css" layer(legacy);
 
 @source "../views/**/*.blade.php";
 @source "../js/**/*.js";
