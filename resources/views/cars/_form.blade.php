@@ -12,7 +12,7 @@
       <div class="form-group"><label for="car_type">Body style</label><select id="car_type" name="car_type" required>@foreach(['sedan','hatchback','suv'] as $v)<option value="{{ $v }}" @selected(old('car_type',$car->car_type ?? '')===$v)>{{ ucfirst($v) }}</option>@endforeach</select></div>
       <div class="form-group"><label for="fuel_type">Fuel type</label><select id="fuel_type" name="fuel_type" required>@foreach(['gasoline','diesel','electric','hybrid'] as $v)<option value="{{ $v }}" @selected(old('fuel_type',$car->fuel_type ?? '')===$v)>{{ ucfirst($v) }}</option>@endforeach</select></div>
       <div class="form-group"><label for="mileage">Mileage <span class="listing-field-hint">miles</span></label><input id="mileage" type="number" name="mileage" value="{{ old('mileage',$car->mileage ?? 0) }}" required min="0" placeholder="e.g. 42000"></div>
-      <div class="form-group"><label for="price">Asking price <span class="listing-field-hint">NGN</span></label><div class="listing-price-input"><span>$</span><input id="price" type="number" step="0.01" name="price" value="{{ old('price',$car->price ?? '') }}" required min="0" placeholder="0.00"></div></div>
+      <div class="form-group"><label for="price">Asking price <span class="listing-field-hint">NGN</span></label><div class="listing-price-input"><span>₦</span><input id="price" type="number" step="0.01" name="price" value="{{ old('price',$car->price ?? '') }}" required min="0" placeholder="0.00"></div></div>
     </div>
   </section>
 

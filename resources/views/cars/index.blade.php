@@ -1,10 +1,7 @@
 @extends('layouts.app')
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/browse.css') }}">
-@endpush
 @section('content')
-<div class="browse-page">
-  <section class="browse-banner">
+<div class="browse-page bg-gradient-to-b from-slate-100 to-white">
+  <section class="browse-banner bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800">
     <div class="container browse-banner-inner" data-reveal>
       <div><span class="browse-eyebrow"><span></span> THE RIGHT CAR IS OUT THERE</span><h1>Find your next car.</h1><p>Explore the latest listings and narrow in on the details that matter to you.</p></div>
       <div class="browse-banner-art" aria-hidden="true"><span class="browse-art-ring browse-art-ring-one"></span><span class="browse-art-ring browse-art-ring-two"></span><span class="browse-art-mark">↗</span><span class="browse-art-caption">YOUR NEXT<br>CHAPTER</span></div>
@@ -15,7 +12,7 @@
   <main class="container browse-content">
     <div class="browse-layout">
       <aside class="browse-sidebar" data-reveal>
-        <form method="GET" action="{{ route('cars.index') }}" class="browse-filter-form">
+        <form method="GET" action="{{ route('cars.index') }}" class="browse-filter-form rounded-3xl border border-slate-200 shadow-xl shadow-slate-900/5">
           <div class="browse-filter-heading"><div><span class="browse-eyebrow">MAKE IT YOURS</span><h2>Refine search</h2></div><span class="browse-filter-icon">☷</span></div>
           <label class="browse-field"><span>Make or model</span><input type="search" name="q" value="{{ request('q') }}" placeholder="Try Toyota or Corolla"></label>
           <div class="browse-field-row">

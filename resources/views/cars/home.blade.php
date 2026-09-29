@@ -1,10 +1,7 @@
 @extends('layouts.app')
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/home.css') }}">
-@endpush
 @section('content')
 <div class="home-page">
-  <section class="home-hero">
+  <section class="home-hero bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 py-20 md:py-28">
     <div class="container home-hero-grid">
       <div class="home-hero-copy" data-reveal>
         <span class="home-eyebrow"><span></span> YOUR NEXT DRIVE STARTS HERE</span>
@@ -16,18 +13,23 @@
         </div>
         <div class="home-hero-note"><span class="home-note-icon">✓</span> Browse at your own pace. Talk to sellers directly.</div>
       </div>
-      <div class="home-hero-visual" data-reveal data-reveal-delay="120">
-        <div class="home-hero-glow"></div>
-        <img class="home-hero-car" src="{{ asset('img/cars/Lexus-RX200t-2016/1.jpeg') }}" alt="A featured Lexus RX200t">
-        <div class="home-visual-label"><span>MAKE YOUR NEXT MOVE</span><strong>Find the one<br>that feels right.</strong></div>
-        <div class="home-visual-index"><span>01</span><i></i><span>YOUR JOURNEY</span></div>
+      <div class="home-hero-visual rounded-[2rem]" data-reveal data-reveal-delay="120">
+        <div class="home-hero-stage" data-depth-scene>
+          <div class="home-hero-glow"></div>
+          <div class="home-hero-orbit home-hero-orbit-one"></div>
+          <div class="home-hero-orbit home-hero-orbit-two"></div>
+          <div class="home-hero-photo-frame"><img class="home-hero-car" src="{{ asset('img/cars/Lexus-RX200t-2016/2.jpeg') }}" alt="Brown Lexus RX200t viewed from the front side" fetchpriority="high"></div>
+          <div class="home-hero-spec"><span class="home-spec-dot"></span><span>THE ROAD AHEAD<br><strong>Looks good on you.</strong></span><span class="home-spec-arrow" aria-hidden="true">&#8599;</span></div>
+          <div class="home-visual-label"><span>MAKE YOUR NEXT MOVE</span><strong>Find the one<br>that feels right.</strong></div>
+          <div class="home-visual-index"><span>01</span><i></i><span>YOUR JOURNEY</span></div>
+        </div>
       </div>
     </div>
     <div class="home-hero-bottom" aria-hidden="true"><span>FIND</span><span>COMPARE</span><span>DRIVE</span></div>
   </section>
 
   <section class="home-search-wrap" aria-label="Search cars">
-    <form class="home-search container" method="GET" action="{{ route('cars.index') }}" data-reveal>
+    <form class="home-search container rounded-2xl border border-white/80 md:rounded-3xl" method="GET" action="{{ route('cars.index') }}" data-reveal>
       <div class="home-search-intro"><span class="home-search-mark">⌕</span><div><strong>Start your search</strong><small>What are you looking for?</small></div></div>
       <label><span>Make or model</span><input type="text" name="q" placeholder="e.g. Toyota, Lexus"></label>
       <label><span>Body style</span><select name="car_type"><option value="">Any type</option><option value="sedan">Sedan</option><option value="suv">SUV</option><option value="hatchback">Hatchback</option></select></label>
@@ -63,7 +65,7 @@
   </section>
 
   <section class="home-seller-section">
-    <div class="container home-seller-panel" data-reveal>
+    <div class="container home-seller-panel rounded-3xl shadow-2xl shadow-slate-900/15" data-reveal>
       <div class="home-seller-art" aria-hidden="true"><span class="home-seller-orbit"></span><span class="home-seller-arrow">↗</span></div>
       <div class="home-seller-copy"><span class="home-eyebrow">READY FOR A NEW OWNER?</span><h2>Your car has a next chapter.</h2><p>Create a listing, add the details and photos, and connect with people looking for their next car.</p><a class="home-button home-button-light" href="{{ auth()->check() ? route('cars.create') : route('signup') }}">List your car <span aria-hidden="true">→</span></a></div>
     </div>

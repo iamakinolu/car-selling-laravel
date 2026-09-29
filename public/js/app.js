@@ -1,6 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const revealItems = [...document.querySelectorAll(".home-page [data-reveal], .browse-page [data-reveal]")];
+  const depthScene = document.querySelector("[data-depth-scene]");
   const prefersLessMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (depthScene && !prefersLessMotion && finePointer) {
+    let frame = 0;
+    depthScene.addEventListener("pointermove", event => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const bounds = depthScene.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width - .5;
+        const y = (event.clientY - bounds.top) / bounds.height - .5;
+        depthScene.style.setProperty("--scene-y", `${(x * 5).toFixed(2)}deg`);
+        depthScene.style.setProperty("--scene-x", `${(-y * 4).toFixed(2)}deg`);
+      });
+    });
+    depthScene.addEventListener("pointerleave", () => {
+      if (frame) cancelAnimationFrame(frame);
+      depthScene.style.setProperty("--scene-x", "0deg");
+      depthScene.style.setProperty("--scene-y", "0deg");
+    });
+  }
+
+  const revealItems = [...document.querySelectorAll(".home-page [data-reveal], .browse-page [data-reveal], .experience-page [data-reveal], .auth-experience [data-reveal]")];
   if (revealItems.length && !prefersLessMotion && "IntersectionObserver" in window) {
     revealItems.forEach(item => item.style.setProperty("--reveal-delay", `${item.dataset.revealDelay || 0}ms`));
     document.documentElement.classList.add("reveal-ready");
@@ -157,12 +178,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const activeImage = document.getElementById("activeImage");
-  const thumbnails = [...document.querySelectorAll(".car-image-thumbnails img")];
+  const activePhotoNumber = document.getElementById("activePhotoNumber");
+  const thumbnails = [...document.querySelectorAll(".car-image-thumbnails [data-image-src]")];
   if (activeImage && thumbnails.length) {
-    thumbnails.forEach((thumbnail, index) => {
+    thumbnails.forEach(thumbnail => {
       thumbnail.addEventListener("click", () => {
-        activeImage.src = thumbnail.src;
-        thumbnails.forEach(t => t.classList.remove("active-thumbnail"));
+        if (thumbnail.dataset.imageSrc === activeImage.src) return;
+        activeImage.classList.remove("image-switching");
+        requestAnimationFrame(() => activeImage.classList.add("image-switching"));
+        activeImage.src = thumbnail.dataset.imageSrc;
+        if (activePhotoNumber) activePhotoNumber.textContent = thumbnail.dataset.imageNumber;
+        thumbnails.forEach(item => item.classList.remove("active-thumbnail"));
         thumbnail.classList.add("active-thumbnail");
       });
     });
