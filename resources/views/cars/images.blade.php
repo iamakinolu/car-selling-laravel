@@ -7,7 +7,7 @@
     <div class="image-manager-card rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5" data-reveal>
       <div class="image-manager-gallery-heading"><div><h2>Your gallery</h2><p>Photos appear on the listing in the order shown.</p></div><span>{{ $car->images->count() }} / 10 photos</span></div>
       @if($car->images->count())
-        <div class="image-manager-grid">@foreach($car->images as $image)<figure><img src="{{ asset('storage/'.$image->path) }}" alt="{{ $car->maker }} {{ $car->model }} photo {{ $loop->iteration }}"><figcaption><span>{{ $loop->first ? 'Cover photo' : 'Photo '.$loop->iteration }}</span><span>{{ str_pad((string)$loop->iteration,2,'0',STR_PAD_LEFT) }}</span></figcaption></figure>@endforeach</div>
+        <div class="image-manager-grid">@foreach($car->images as $image)<figure><img src="{{ $image->url }}" alt="{{ $car->maker }} {{ $car->model }} photo {{ $loop->iteration }}"><figcaption><span>{{ $loop->first ? 'Cover photo' : 'Photo '.$loop->iteration }}</span><span>{{ str_pad((string)$loop->iteration,2,'0',STR_PAD_LEFT) }}</span></figcaption></figure>@endforeach</div>
       @else
         <div class="image-manager-empty"><span>▧</span><p>No photos uploaded yet. Add at least one to make this listing visible to shoppers.</p></div>
       @endif

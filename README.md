@@ -19,7 +19,7 @@ php artisan storage:link
 php artisan serve
 ```
 
-Then open `http://127.0.0.1:8000`.
+Build the Tailwind/Vite assets with `npm install` and `npm run build`, then open `http://127.0.0.1:8000`.
 
 ### Demo account
 
@@ -38,4 +38,14 @@ Then open `http://127.0.0.1:8000`.
 - UUID primary keys for users and cars
 - SQLite by default, with MySQL/PostgreSQL configuration available in `.env`
 
-No npm installation is required for this version; the supplied CSS and vanilla JavaScript are served directly from `public/`.
+## Persistent car photo storage on Vercel
+
+Vercel's application filesystem is temporary. Create a public `car-images` bucket in Supabase Storage, then add these environment variables to the Vercel project for Production (and Preview if needed):
+
+```env
+SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVER_ONLY_SERVICE_ROLE_KEY
+SUPABASE_STORAGE_BUCKET=car-images
+```
+
+Never expose `SUPABASE_SERVICE_ROLE_KEY` in frontend code or a `VITE_` variable. Local development continues to use Laravel's public disk when the Supabase Storage variables are unset.

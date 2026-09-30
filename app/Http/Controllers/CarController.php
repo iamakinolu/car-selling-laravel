@@ -3,8 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\CarImage;
+use App\Services\CarImageStorage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CarController extends Controller
@@ -64,7 +64,7 @@ class CarController extends Controller
     public function destroy(Car $car)
     {
         $this->authorizeCar($car);
-        foreach ($car->images as $image) Storage::disk('public')->delete($image->path);
+        foreach ($car->images as $image) app(CarImageStorage::class)->delete($image->path);
         $car->delete();
         return back()->with('success','Car deleted.');
     }
@@ -91,6 +91,7 @@ class CarController extends Controller
     public function uploadImages(Request $request, Car $car)
     {
         $this->authorizeCar($car);
+        app(CarImageStorage::class)->assertAvailable();
         $request->validate(['images'=>'required|array|max:10','images.*'=>'image|max:5120']);
         if ($car->images()->count() + count($request->file('images', []) ?? []) > 10) {
             throw \Illuminate\Validation\ValidationException::withMessages([
@@ -99,7 +100,7 @@ class CarController extends Controller
         }
         $position = ((int)$car->images()->max('position')) + 1;
         foreach ($request->file('images') as $file) {
-            $path = $file->store('cars/'.$car->id, 'public');
+            $path = app(CarImageStorage::class)->store($file, 'cars/'.$car->id);
             $car->images()->create(['path'=>$path,'position'=>$position++]);
         }
         return back()->with('success','Images uploaded.');
@@ -115,7 +116,7 @@ class CarController extends Controller
             ]);
         }
 
-        Storage::disk('public')->delete($image->path);
+        app(CarImageStorage::class)->delete($image->path);
         $image->delete();
 
         return response()->json(['message' => 'Photo removed.']);
@@ -146,6 +147,7 @@ class CarController extends Controller
         ]);
         $existingImageCount = $car->exists ? $car->images()->count() : 0;
         $newImageCount = count($request->file('images', []) ?? []);
+        if ($newImageCount > 0) app(CarImageStorage::class)->assertAvailable();
         if ($existingImageCount + $newImageCount < 1) {
             throw \Illuminate\Validation\ValidationException::withMessages([
                 'images' => 'Upload at least one photo before saving this listing.',
@@ -166,7 +168,7 @@ class CarController extends Controller
         if ($request->hasFile('images')) {
             $position = ((int)$car->images()->max('position')) + 1;
             foreach ($request->file('images') as $file) {
-                $path = $file->store('cars/'.$car->id, 'public');
+                $path = app(CarImageStorage::class)->store($file, 'cars/'.$car->id);
                 $car->images()->create(['path'=>$path,'position'=>$position++]);
             }
         }

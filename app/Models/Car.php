@@ -12,6 +12,6 @@ class Car extends Model {
     public function watchlistedBy() { return $this->belongsToMany(User::class, 'watchlists'); }
     public function getPrimaryImageUrlAttribute(): string {
         $image = $this->images->first();
-        return $image ? asset('storage/'.$image->path) : asset('img/cars/Lexus-RX200t-2016/1.jpeg');
+        return $image ? app(\App\Services\CarImageStorage::class)->url($image->path) : '/img/cars/Lexus-RX200t-2016/1.jpeg';
     }
 }

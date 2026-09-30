@@ -21,7 +21,7 @@
       </section>
     </div>
     @if($car->images->count())
-      <div class="detail-thumbnails car-image-thumbnails" aria-label="Choose a car photo">@foreach($car->images as $image)<button type="button" class="{{ $loop->first ? 'active-thumbnail' : '' }}" data-image-src="{{ asset('storage/'.$image->path) }}" data-image-number="{{ str_pad((string)$loop->iteration,2,'0',STR_PAD_LEFT) }}" aria-label="Show photo {{ $loop->iteration }}"><img src="{{ asset('storage/'.$image->path) }}" alt=""></button>@endforeach</div>
+      <div class="detail-thumbnails car-image-thumbnails" aria-label="Choose a car photo">@foreach($car->images as $image)<button type="button" class="{{ $loop->first ? 'active-thumbnail' : '' }}" data-image-src="{{ $image->url }}" data-image-number="{{ str_pad((string)$loop->iteration,2,'0',STR_PAD_LEFT) }}" aria-label="Show photo {{ $loop->iteration }}"><img src="{{ $image->url }}" alt=""></button>@endforeach</div>
     @endif
     <div class="detail-bottom-note"><span>CAR FINDAL</span><i></i><p>Take your time, ask questions, and make the choice that feels right for you.</p></div>
   </div>

@@ -1,0 +1,9 @@
+<?php
+
+return [
+    'supabase_storage' => [
+        'url' => env('SUPABASE_URL'),
+        'service_role_key' => env('SUPABASE_SERVICE_ROLE_KEY'),
+        'bucket' => env('SUPABASE_STORAGE_BUCKET', 'car-images'),
+    ],
+];
