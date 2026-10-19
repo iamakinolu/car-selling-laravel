@@ -12,7 +12,7 @@
 <body class="min-h-screen bg-stone-50 font-sans text-slate-800 antialiased">
 <header class="navbar sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 shadow-sm backdrop-blur-xl">
   <div class="container navbar-content mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-3 md:px-8">
-    <a href="{{ route('home') }}" class="logo-wrapper flex items-center gap-2.5 text-lg font-extrabold tracking-tight text-ink-950 transition hover:text-brand-600" aria-label="Showboy Motors home"><img class="h-9 w-9" src="{{ asset('img/car-findal-mark.svg') }}" alt=""><span>Showboy Motors</span></a>
+    <a href="{{ route('home') }}" class="logo-wrapper flex items-center text-lg font-extrabold tracking-tight text-ink-950 transition hover:text-brand-600" aria-label="SHOWBOY MOTORS home"><span>SHOWBOY MOTORS</span></a>
     <button class="btn btn-default btn-navbar-toggle rounded-xl border border-slate-200 bg-white p-2 shadow-sm transition hover:border-brand-200 hover:text-brand-600" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="siteNavigation">
       <svg class="nav-icon-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="nav-icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18"/></svg>
@@ -48,11 +48,11 @@
 <main class="min-h-[65vh] p-0">@yield('content')</main>
 <footer class="site-footer border-t border-white/10 bg-ink-950 text-white">
   <div class="container site-footer-main mx-auto grid w-full max-w-7xl gap-12 px-5 py-12 md:grid-cols-[1.5fr_1fr_1fr] md:px-8 md:py-16">
-    <div class="site-footer-brand"><a class="inline-flex items-center gap-3 text-lg font-bold tracking-tight text-white" href="{{ route('home') }}"><img class="h-10 w-10" src="{{ asset('img/car-findal-mark.svg') }}" alt=""><span>Showboy Motors</span></a><p>Find the right car for the road ahead. Explore listings and connect with sellers, all in one place.</p><a class="site-footer-email" href="mailto:{{ config('mail.from.address') }}">{{ config('mail.from.address') }} <span aria-hidden="true">&rarr;</span></a></div>
+    <div class="site-footer-brand"><a class="inline-flex items-center text-lg font-bold tracking-tight text-white" href="{{ route('home') }}"><span>SHOWBOY MOTORS</span></a><p>Find the right car for the road ahead. Explore listings and connect with sellers, all in one place.</p><a class="site-footer-email" href="mailto:{{ config('mail.from.address') }}">{{ config('mail.from.address') }} <span aria-hidden="true">&rarr;</span></a></div>
     <div class="site-footer-links"><div><strong>Explore</strong><a href="{{ route('cars.index') }}">Browse cars</a><a href="{{ route('about') }}">About us</a></div><div><strong>Your account</strong>@auth<a href="{{ route('cars.mine') }}">My listings</a>@else<a href="{{ route('login') }}">Sign in</a><a href="{{ route('signup') }}">Create an account</a>@endauth</div></div>
     <div class="site-footer-contact"><strong>Need a hand?</strong><p>Questions about a listing or the site? We are happy to help.</p><a href="{{ route('contact') }}">Contact our team <span aria-hidden="true">&rarr;</span></a></div>
   </div>
-  <div class="container site-footer-bottom mx-auto flex w-full max-w-7xl flex-col gap-2 border-t border-white/10 px-5 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between md:px-8"><span>&copy; {{ date('Y') }} Showboy Motors. All rights reserved.</span><span>Made for the road ahead <i class="text-brand-400">&#10022;</i></span></div>
+  <div class="container site-footer-bottom mx-auto flex w-full max-w-7xl flex-col gap-2 border-t border-white/10 px-5 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between md:px-8"><span>&copy; {{ date('Y') }} SHOWBOY MOTORS. All rights reserved.</span></div>
 </footer>
 <script src="/js/app.js" defer></script>
 @stack('scripts')
