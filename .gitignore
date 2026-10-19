@@ -1,8 +1,17 @@
 /vendor/
 /node_modules/
 /.env
+/.env.*
+!/.env.example
+/.aws/
+/auth.json
 /.phpunit.result.cache
 /storage/*.key
+/storage/app/private/
+/storage/app/public/cars/*
+!/storage/app/public/cars/demo/
+/storage/app/public/cars/demo/*
+!/storage/app/public/cars/demo/1.jpeg
 /storage/framework/
 /storage/logs/
 /public/storage

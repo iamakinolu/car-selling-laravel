@@ -17,7 +17,7 @@ class CarImageStorage
     {
         $this->assertAvailable();
 
-        if (!$this->configured()) {
+        if (! $this->configured()) {
             return $file->store($directory, 'public');
         }
 
@@ -39,7 +39,7 @@ class CarImageStorage
 
     public function assertAvailable(): void
     {
-        if (app()->environment('production') && !$this->configured()) {
+        if (app()->environment('production') && ! $this->configured()) {
             throw new RuntimeException('Supabase Storage is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.');
         }
     }

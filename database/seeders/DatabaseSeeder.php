@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\Car;
@@ -29,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'state' => 'Lagos',
             'city' => 'Ikeja',
             'description' => 'A clean demo vehicle imported from the original static website design.',
-            'features' => ['air_conditioning','power_windows','abs','bluetooth_connectivity','gps_navigation','leather_seats'],
+            'features' => ['air_conditioning', 'power_windows', 'abs', 'bluetooth_connectivity', 'gps_navigation', 'leather_seats'],
             'published' => true,
         ]);
         $car->images()->create(['path' => 'cars/demo/1.jpeg', 'position' => 1]);

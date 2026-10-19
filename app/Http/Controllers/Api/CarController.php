@@ -20,7 +20,7 @@ class CarController extends Controller
     public function store()
     {
         return response()->json([
-            'message' => 'Store endpoint working'
+            'message' => 'Store endpoint working',
         ]);
     }
 
@@ -28,7 +28,7 @@ class CarController extends Controller
     {
         return response()->json([
             'message' => 'Update endpoint working',
-            'car' => $car
+            'car' => $car,
         ]);
     }
 
@@ -36,7 +36,7 @@ class CarController extends Controller
     {
         return response()->json([
             'message' => 'Delete endpoint working',
-            'car' => $car
+            'car' => $car,
         ]);
     }
 }

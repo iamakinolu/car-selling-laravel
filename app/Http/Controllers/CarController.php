@@ -1,17 +1,19 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Car;
 use App\Models\CarImage;
 use App\Services\CarImageStorage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class CarController extends Controller
 {
     public function home()
     {
         $cars = Car::with('images')->where('published', true)->latest()->take(8)->get();
+
         return view('cars.home', compact('cars'));
     }
 
@@ -20,19 +22,22 @@ class CarController extends Controller
         $query = Car::with('images')->where('published', true);
         $this->applyFilters($query, $request);
         $cars = $query->latest()->paginate(12)->withQueryString();
+
         return view('cars.index', compact('cars'));
     }
 
     public function show(Car $car)
     {
         abort_unless($car->published || auth()->id() === $car->user_id, 404);
-        $car->load('images','user');
+        $car->load('images', 'user');
+
         return view('cars.show', compact('car'));
     }
 
     public function myCars()
     {
         $cars = auth()->user()->cars()->with('images')->latest()->paginate(10);
+
         return view('cars.my-cars', compact('cars'));
     }
 
@@ -48,20 +53,23 @@ class CarController extends Controller
 
     public function adminStore(Request $request)
     {
-        $this->saveCar(new Car(), $request);
+        $this->saveCar(new Car, $request);
+
         return redirect()->route('admin.cars.create')->with('success', 'Vehicle added successfully.');
     }
 
     public function store(Request $request)
     {
-        $car = $this->saveCar(new Car(), $request);
-        return redirect()->route('cars.mine')->with('success','Car listed successfully.');
+        $car = $this->saveCar(new Car, $request);
+
+        return redirect()->route('cars.mine')->with('success', 'Car listed successfully.');
     }
 
     public function edit(Car $car)
     {
         $this->authorizeCar($car);
         $car->load('images');
+
         return view('cars.edit', compact('car'));
     }
 
@@ -69,26 +77,32 @@ class CarController extends Controller
     {
         $this->authorizeCar($car);
         $this->saveCar($car, $request, true);
-        return redirect()->route('cars.mine')->with('success','Car updated successfully.');
+
+        return redirect()->route('cars.mine')->with('success', 'Car updated successfully.');
     }
 
     public function destroy(Car $car)
     {
         $this->authorizeCar($car);
-        foreach ($car->images as $image) app(CarImageStorage::class)->delete($image->path);
+        foreach ($car->images as $image) {
+            app(CarImageStorage::class)->delete($image->path);
+        }
         $car->delete();
-        return back()->with('success','Car deleted.');
+
+        return back()->with('success', 'Car deleted.');
     }
 
     public function toggleWatchlist(Car $car)
     {
         $car->watchlistedBy()->toggle([auth()->id()]);
-        return back()->with('success','Watchlist updated.');
+
+        return back()->with('success', 'Watchlist updated.');
     }
 
     public function watchlist()
     {
         $cars = auth()->user()->watchlistCars()->with('images')->latest()->paginate(12);
+
         return view('cars.watchlist', compact('cars'));
     }
 
@@ -96,6 +110,7 @@ class CarController extends Controller
     {
         $this->authorizeCar($car);
         $car->load('images');
+
         return view('cars.images', compact('car'));
     }
 
@@ -103,18 +118,19 @@ class CarController extends Controller
     {
         $this->authorizeCar($car);
         app(CarImageStorage::class)->assertAvailable();
-        $request->validate(['images'=>'required|array|max:10','images.*'=>'image|max:5120']);
+        $request->validate(['images' => 'required|array|max:10', 'images.*' => 'image|max:5120']);
         if ($car->images()->count() + count($request->file('images', []) ?? []) > 10) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'images' => 'A car can have up to 10 photos. Remove some photos before adding more.',
             ]);
         }
-        $position = ((int)$car->images()->max('position')) + 1;
+        $position = ((int) $car->images()->max('position')) + 1;
         foreach ($request->file('images') as $file) {
             $path = app(CarImageStorage::class)->store($file, 'cars/'.$car->id);
-            $car->images()->create(['path'=>$path,'position'=>$position++]);
+            $car->images()->create(['path' => $path, 'position' => $position++]);
         }
-        return back()->with('success','Images uploaded.');
+
+        return back()->with('success', 'Images uploaded.');
     }
 
     public function destroyImage(Car $car, CarImage $image)
@@ -122,7 +138,7 @@ class CarController extends Controller
         $this->authorizeCar($car);
         abort_unless($image->car_id === $car->id, 404);
         if ($car->images()->count() <= 1) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'images' => 'A car listing must keep at least one photo.',
             ]);
         }
@@ -138,51 +154,56 @@ class CarController extends Controller
         abort_unless(auth()->id() === $car->user_id, 403);
     }
 
-    private function saveCar(Car $car, Request $request, bool $updating=false): Car
+    private function saveCar(Car $car, Request $request, bool $updating = false): Car
     {
         $data = $request->validate([
-            'maker'=>'required|string|max:100',
-            'model'=>'required|string|max:100',
-            'year'=>'required|integer|min:1900|max:'.(date('Y')+1),
-            'car_type'=>'required|in:sedan,hatchback,suv',
-            'fuel_type'=>'required|in:gasoline,diesel,electric,hybrid',
-            'price'=>'required|numeric|min:0',
-            'mileage'=>'required|integer|min:0',
-            'state'=>'nullable|string|max:100',
-            'city'=>'nullable|string|max:100',
-            'description'=>'nullable|string|max:5000',
-            'features'=>'nullable|array',
-            'published'=>'nullable|boolean',
-            'images'=>'nullable|array|max:10',
-            'images.*'=>'image|max:5120',
+            'maker' => 'required|string|max:100',
+            'model' => 'required|string|max:100',
+            'year' => 'required|integer|min:1900|max:'.(date('Y') + 1),
+            'car_type' => 'required|in:sedan,hatchback,suv',
+            'fuel_type' => 'required|in:gasoline,diesel,electric,hybrid',
+            'price' => 'required|numeric|min:0',
+            'mileage' => 'required|integer|min:0',
+            'state' => 'nullable|string|max:100',
+            'city' => 'nullable|string|max:100',
+            'description' => 'nullable|string|max:5000',
+            'features' => 'nullable|array',
+            'published' => 'nullable|boolean',
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'image|max:5120',
         ]);
         $existingImageCount = $car->exists ? $car->images()->count() : 0;
         $newImageCount = count($request->file('images', []) ?? []);
-        if ($newImageCount > 0) app(CarImageStorage::class)->assertAvailable();
+        if ($newImageCount > 0) {
+            app(CarImageStorage::class)->assertAvailable();
+        }
         if ($existingImageCount + $newImageCount < 1) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'images' => 'Upload at least one photo before saving this listing.',
             ]);
         }
         if ($existingImageCount + $newImageCount > 10) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'images' => 'A car can have up to 10 photos. Remove some photos before adding more.',
             ]);
         }
-        if (!$updating) $data['user_id']=auth()->id();
-        $data['published']=$request->boolean('published');
+        if (! $updating) {
+            $data['user_id'] = auth()->id();
+        }
+        $data['published'] = $request->boolean('published');
         $features = $request->input('features', []);
-        $data['features']=$features;
+        $data['features'] = $features;
         unset($data['images']);
         $car->fill($data)->save();
 
         if ($request->hasFile('images')) {
-            $position = ((int)$car->images()->max('position')) + 1;
+            $position = ((int) $car->images()->max('position')) + 1;
             foreach ($request->file('images') as $file) {
                 $path = app(CarImageStorage::class)->store($file, 'cars/'.$car->id);
-                $car->images()->create(['path'=>$path,'position'=>$position++]);
+                $car->images()->create(['path' => $path, 'position' => $position++]);
             }
         }
+
         return $car;
     }
 
@@ -195,13 +216,25 @@ class CarController extends Controller
                     ->orWhereRaw('LOWER(model) LIKE ?', ['%'.$term.'%']);
             });
         }
-        foreach (['maker','model','state','city','car_type','fuel_type'] as $field) {
-            if ($request->filled($field)) $query->where($field, $request->input($field));
+        foreach (['maker', 'model', 'state', 'city', 'car_type', 'fuel_type'] as $field) {
+            if ($request->filled($field)) {
+                $query->where($field, $request->input($field));
+            }
         }
-        if ($request->filled('year_from')) $query->where('year','>=',$request->integer('year_from'));
-        if ($request->filled('year_to')) $query->where('year','<=',$request->integer('year_to'));
-        if ($request->filled('price_from')) $query->where('price','>=',$request->input('price_from'));
-        if ($request->filled('price_to')) $query->where('price','<=',$request->input('price_to'));
-        if ($request->filled('mileage')) $query->where('mileage','<=',$request->integer('mileage'));
+        if ($request->filled('year_from')) {
+            $query->where('year', '>=', $request->integer('year_from'));
+        }
+        if ($request->filled('year_to')) {
+            $query->where('year', '<=', $request->integer('year_to'));
+        }
+        if ($request->filled('price_from')) {
+            $query->where('price', '>=', $request->input('price_from'));
+        }
+        if ($request->filled('price_to')) {
+            $query->where('price', '<=', $request->input('price_to'));
+        }
+        if ($request->filled('mileage')) {
+            $query->where('mileage', '<=', $request->integer('mileage'));
+        }
     }
 }

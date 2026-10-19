@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Support\ServiceProvider;
+
 return [
     'name' => env('APP_NAME', 'Showboy Motors'),
     'env' => env('APP_ENV', 'production'),
@@ -11,5 +14,5 @@ return [
     'key' => env('APP_KEY'),
     'cipher' => 'AES-256-CBC',
     'maintenance' => ['driver' => 'file'],
-    'providers' => Illuminate\Support\ServiceProvider::defaultProviders()->merge([])->toArray(),
+    'providers' => ServiceProvider::defaultProviders()->merge([])->toArray(),
 ];
