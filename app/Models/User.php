@@ -14,4 +14,8 @@ class User extends Authenticatable implements CanResetPasswordContract {
     protected function casts(): array { return ['email_verified_at'=>'datetime','password'=>'hashed']; }
     public function cars() { return $this->hasMany(Car::class); }
     public function watchlistCars() { return $this->belongsToMany(Car::class, 'watchlists'); }
+    public function isAdmin(): bool {
+        $adminEmail = config('services.admin_email');
+        return filled($adminEmail) && strcasecmp($this->email, $adminEmail) === 0;
+    }
 }

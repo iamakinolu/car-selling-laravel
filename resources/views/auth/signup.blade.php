@@ -3,7 +3,7 @@
 <div class="auth-experience auth-signup-page bg-gradient-to-br from-brand-50 via-white to-slate-100">
   <div class="auth-layout container">
     <section class="auth-card-modern rounded-3xl border border-white bg-white/95 shadow-2xl shadow-slate-900/10 backdrop-blur" data-reveal>
-      <a href="{{ route('home') }}" class="auth-brand"><img src="{{ asset('img/car-findal-mark.svg') }}" alt=""><span>Car Findal</span></a>
+      <a href="{{ route('home') }}" class="auth-brand"><img src="{{ asset('img/car-findal-mark.svg') }}" alt=""><span>Showboy Motors</span></a>
       <span class="experience-eyebrow">JOIN THE JOURNEY</span><h1>Let’s get you started.</h1><p class="auth-intro">Create an account to save favourites and share your car with shoppers.</p>
       <form action="{{ route('signup.store') }}" method="POST" class="auth-modern-form">@csrf
         <div class="auth-input-pair"><label>First name<input name="first_name" value="{{ old('first_name') }}" placeholder="First name" autocomplete="given-name" required></label><label>Last name<input name="last_name" value="{{ old('last_name') }}" placeholder="Last name" autocomplete="family-name" required></label></div>

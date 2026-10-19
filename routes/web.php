@@ -5,6 +5,8 @@ use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [CarController::class, 'home'])->name('home');
+Route::view('/about-us', 'pages.about')->name('about');
+Route::view('/contact-us', 'pages.contact')->name('contact');
 Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
 Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
 
@@ -32,4 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/cars/{car}/images', [CarController::class, 'images'])->name('cars.images');
     Route::post('/cars/{car}/images', [CarController::class, 'uploadImages'])->name('cars.images.upload');
     Route::delete('/cars/{car}/images/{image}', [CarController::class, 'destroyImage'])->name('cars.images.destroy');
+});
+
+Route::middleware(['auth', 'can:manage-cars'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/cars/create', [CarController::class, 'adminCreate'])->name('cars.create');
+    Route::post('/cars', [CarController::class, 'adminStore'])->name('cars.store');
 });

@@ -41,6 +41,17 @@ class CarController extends Controller
         return view('cars.create');
     }
 
+    public function adminCreate()
+    {
+        return view('cars.create', ['adminMode' => true]);
+    }
+
+    public function adminStore(Request $request)
+    {
+        $this->saveCar(new Car(), $request);
+        return redirect()->route('admin.cars.create')->with('success', 'Vehicle added successfully.');
+    }
+
     public function store(Request $request)
     {
         $car = $this->saveCar(new Car(), $request);

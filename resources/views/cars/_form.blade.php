@@ -1,5 +1,5 @@
 @php($editing = isset($car))
-<form method="POST" action="{{ $editing ? route('cars.update',$car) : route('cars.store') }}" enctype="multipart/form-data" class="listing-form">
+<form method="POST" action="{{ $editing ? route('cars.update',$car) : (request()->routeIs('admin.*') ? route('admin.cars.store') : route('cars.store')) }}" enctype="multipart/form-data" class="listing-form">
   @csrf
   @if($editing) @method('PUT') @endif
 
