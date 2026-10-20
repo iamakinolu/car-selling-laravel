@@ -75,7 +75,7 @@
                     @endforeach
                 </div>
             @endif
-            <div class="detail-bottom-note"><span>CAR FINDAL</span><i></i>
+            <div class="detail-bottom-note">
                 <p>Take your time, ask questions, and make the choice that feels right for you.</p>
             </div>
         </div>
